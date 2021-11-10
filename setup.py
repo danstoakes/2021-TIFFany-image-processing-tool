@@ -10,7 +10,7 @@ setup(
     license="MIT",
     packages=find_packages(include=["TIFFany"]),
     install_requires=[
-        "cv2",
+        "opencv-python",
         "numpy"
     ],
     zip_safe=False
