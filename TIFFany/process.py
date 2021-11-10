@@ -61,7 +61,6 @@ def calc_ssim(img1, img2):
 
         return round(ssim_map.mean(), 2)
         
-
 def ssim(img1, compare):
     if isinstance(compare, str):
         return calc_ssim(img1, compare)
