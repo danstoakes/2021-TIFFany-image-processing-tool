@@ -69,11 +69,7 @@ def foreground_mask(src1, src2, threshold=128):
     return foregroundMask
 
 def contours(src1, src2, threshold=120):
-    #img1 = cv2.imread(src1, cv2.IMREAD_COLOR)
-    #img2 = cv2.imread(src2, cv2.IMREAD_COLOR)
-
     img = foreground_mask(src1, src2)
-    
     contours, heirarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     clean = convert_to_RGB(img)

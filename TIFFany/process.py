@@ -19,9 +19,6 @@ def calc_mse(img1, img2):
     return -1
 
 def mse(img1, compare):
-    if isinstance(img1, str):
-        img1 = cv2.imread(img1, cv2.IMREAD_COLOR)
-
     if isinstance(compare, str):
         return calc_mse(img1, compare)
     else:
@@ -66,9 +63,6 @@ def calc_ssim(img1, img2):
         
 
 def ssim(img1, compare):
-    if isinstance(img1, str):
-        img1 = cv2.imread(img1, cv2.IMREAD_COLOR)
-
     if isinstance(compare, str):
         return calc_ssim(img1, compare)
     else:
