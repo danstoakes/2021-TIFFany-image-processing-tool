@@ -7,7 +7,7 @@ Once downloaded, the
 # Requirements
 Python 3 is the recommended version to be used with this tool, following the official deprecation of Python 2.
 
-TIFFany has a heavy reliance on the numPy and python-opencv packages and should be installed automatically via the `setup.py` script. If these packages do not install automatically, they can be installed with the command:
+TIFFany has a heavy reliance on the `numPy` and `python-opencv` packages and should be installed automatically via the `setup.py` script. If these packages do not install automatically, they can be installed with the command:
 
 `$ pip3 install -r requirements.txt`
 
