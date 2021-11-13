@@ -2,13 +2,16 @@ import cv2
 import numpy as np
 from .utility import valid_images
 
+# calculates the mean squared error between two images
 def calc_mse(img1, img2):
+    # convert image urls to opencv image matrices
     if isinstance(img1, str):
         img1 = cv2.imread(img1, cv2.IMREAD_COLOR)
 
     if isinstance(img2, str):
         img2 = cv2.imread(img2, cv2.IMREAD_COLOR)
-
+        
+    # calculates mse if the images are valid
     if valid_images(img1, img2):
         difference = img1.astype(np.float64) - img2.astype(np.float64)
         error = np.sum(difference ** 2)
@@ -18,6 +21,8 @@ def calc_mse(img1, img2):
 
     return -1
 
+# handles the mse method call to differentiate between single
+# image comparisons and grouped comparisons
 def mse(img1, compare):
     if isinstance(compare, str):
         return calc_mse(img1, compare)
@@ -31,22 +36,25 @@ def mse(img1, compare):
 
         return mse_values
 
+# calculates the structural similarity index between two images
 def calc_ssim(img1, img2):
+    # convert image urls to opencv image matrices
     if isinstance(img1, str):
         img1 = cv2.imread(img1, cv2.IMREAD_COLOR)
 
     if isinstance(img2, str):
         img2 = cv2.imread(img2, cv2.IMREAD_COLOR)
 
+    # calculates ssim if the images are valid
     if valid_images(img1, img2):
         C1 = (0.01 * 255) ** 2 # ensures stability when the denominator is 0
         C2 = (0.03 * 255) ** 2 # 255 for the dynamic range (255 pixels for 8 bits)
-
+        # convert images to 64 bit floats and calculate the distribution
         img1 = img1.astype(np.float64)
         img2 = img2.astype(np.float64)
         distribution = cv2.getGaussianKernel(11, 1.5) # constants
         window = np.outer(distribution, distribution.transpose())
-
+        
         mu1 = cv2.filter2D(img1, -1, window)        
         mu2 = cv2.filter2D(img2, -1, window)
         mu1_sq = mu1 ** 2
@@ -60,7 +68,9 @@ def calc_ssim(img1, img2):
         ssim_map = ((2 * mu12 + C1) * (2 * sigma12 + C2)) / ((mu1_sq + mu2_sq + C1) * (sigma1_sq + sigma2_sq + C2))
 
         return round(ssim_map.mean(), 2)
-        
+
+# handles the ssim method call to differentiate between single
+# image comparisons and grouped comparisons
 def ssim(img1, compare):
     if isinstance(compare, str):
         return calc_ssim(img1, compare)
