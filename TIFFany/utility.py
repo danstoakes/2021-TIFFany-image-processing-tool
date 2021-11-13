@@ -1,6 +1,7 @@
 import cv2
 import numpy
 
+# cleans an input image
 def clean_binary_image(img, elementSize=5):
     size = (elementSize, elementSize)
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, size)
@@ -10,6 +11,8 @@ def clean_binary_image(img, elementSize=5):
 
     return out
 
+# compares two images and returns whether they are valid, otherwise
+# an error is thrown
 def valid_images(img1, img2):
     if not img1.shape == img2.shape:
         msg = """
@@ -21,22 +24,27 @@ def valid_images(img1, img2):
 
     return True
 
+# converts an input image to greyscale
 def convert_to_grey(src):
     if isinstance(src, str):
         src = cv2.imread(src, cv2.IMREAD_COLOR)
     return cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
+# converts an input image to greyscale
 def convert_to_gray(src):
     return convert_to_grey(src)
 
+# converts an input image to RGB
 def convert_to_RGB(src):
     if isinstance(src, str):
         src = cv2.imread(src, cv2.IMREAD_GRAYSCALE)
     return cv2.cvtColor(src, cv2.COLOR_GRAY2RGB)
 
+# statically resizes an image based on input widths and heights
 def resize_static(img, width, height):
     return cv2.resize(img, (width, height))
 
+# resizes an input image based on a set width or height
 def resize(img, width=None, height=None):
     h, w = img.shape[:2]
     inter_type = cv2.INTER_AREA
