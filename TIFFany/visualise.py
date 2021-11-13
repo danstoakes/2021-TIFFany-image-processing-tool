@@ -2,6 +2,7 @@ import cv2
 import numpy
 from .utility import clean_binary_image, convert_to_grey, convert_to_RGB, resize
 
+# displays an input image with a set width and/or height
 def show(src, width=None, height=None):
     if isinstance(src, str):
         if width != None or height != None:
@@ -14,10 +15,12 @@ def show(src, width=None, height=None):
         else:
             cv2.imshow("Image", src)
 
+# displays an input image in a window
 def display_window(msg, src, img):
     title = "{msg} [{img_src}]"
     cv2.imshow(title.format(msg = msg, img_src = src), img)
 
+# performs a Gaussin blur on an input image
 def gaussian_blur(src, radius=5, display=False):
     im = cv2.imread(src, cv2.IMREAD_UNCHANGED)
     if radius % 2 == 0:
@@ -31,6 +34,7 @@ def gaussian_blur(src, radius=5, display=False):
 
     return im
 
+# performs a median blur on an input image
 def median_blur(src, radius=5, display=False):
     if isinstance(src, str):
         im = cv2.imread(src, cv2.IMREAD_COLOR)
@@ -47,6 +51,7 @@ def median_blur(src, radius=5, display=False):
 
     return im
 
+# calculates the foreground mask between two input images
 def foreground_mask(src1, src2, threshold=128):
     # threshold is for colour values, i.e. 0 to 255
     # if greater than 128 (for example), set to 1, else 0
@@ -68,6 +73,7 @@ def foreground_mask(src1, src2, threshold=128):
 
     return foregroundMask
 
+# calculates the contours of the differences between two input images
 def contours(src1, src2, threshold=120):
     img = foreground_mask(src1, src2)
     contours, heirarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
