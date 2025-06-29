@@ -4,14 +4,17 @@ TIFFany is a Python package which aims to perform various different computer vis
 # Installation
 Once downloaded, the package can be installed globally by navigating to the parent folder and executing the command:
 
-`$ pip install TIFFany`
+`pip3 install TIFFany`
 
 # Requirements
 Python 3 is the recommended version to be used with this tool, following the official deprecation of Python 2.
 
 TIFFany has a heavy reliance on the `numPy` and `python-opencv` packages, which should be installed automatically via the `setup.py` script. If these packages do not install automatically, they can be installed with the command:
 
-`$ pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
+
+# Usage
+Run the example command by using `python3 .` when in the root directory.
 
 # Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

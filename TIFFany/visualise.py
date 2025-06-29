@@ -1,24 +1,52 @@
 import cv2
-import numpy
+import tempfile
+import subprocess
+import platform
 from .utility import clean_binary_image, convert_to_grey, convert_to_RGB, resize
 
-# displays an input image with a set width and/or height
-def show(src, width=None, height=None):
-    if isinstance(src, str):
-        if width != None or height != None:
-            cv2.imshow(src, resize(cv2.imread(src, 0), width, height))
-        else:
-            cv2.imshow(src, cv2.imread(src, 0))
+def _open_image_file(path):
+    system = platform.system()
+    if system == "Darwin":        # macOS
+        subprocess.run(["open", path])
+    elif system == "Windows":     # Windows
+        subprocess.run(["start", path], shell=True)
+    elif system == "Linux":       # Linux
+        subprocess.run(["xdg-open", path])
     else:
-        if width != None or height != None:
-            cv2.imshow("Image", resize(src, width, height))
-        else:
-            cv2.imshow("Image", src)
+        print(f"Unsupported OS: {system}. Image saved at {path}")
 
-# displays an input image in a window
+def _save_temp_image(img, prefix=None):
+    # Create a NamedTemporaryFile without auto-delete, so we can open it later
+    if prefix:
+        # Generate a temp file with custom prefix
+        tmp_dir = tempfile.gettempdir()
+        # Use prefix + random suffix + .png
+        temp_path = tempfile.mktemp(suffix=".png", prefix=prefix + "_", dir=tmp_dir)
+    else:
+        # Default random temp file
+        tmp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+        temp_path = tmp_file.name
+
+    cv2.imwrite(temp_path, img)
+    return temp_path
+
+def show(src, width=None, height=None, filename_prefix=None):
+    if isinstance(src, str):
+        img = cv2.imread(src, 0)
+    else:
+        img = src
+
+    if width is not None or height is not None:
+        img = resize(img, width, height)
+
+    temp_path = _save_temp_image(img, prefix=filename_prefix)
+    _open_image_file(temp_path)
+
 def display_window(msg, src, img):
-    title = "{msg} [{img_src}]"
-    cv2.imshow(title.format(msg = msg, img_src = src), img)
+    title = f"{msg}"
+
+    temp_path = _save_temp_image(img, title)
+    _open_image_file(temp_path)
 
 # performs a Gaussin blur on an input image
 def gaussian_blur(src, radius=5, display=False):
@@ -30,7 +58,7 @@ def gaussian_blur(src, radius=5, display=False):
     im = cv2.GaussianBlur(im, filterSize, cv2.BORDER_DEFAULT)
 
     if display:
-        display_window("Gaussian blur", src, im)
+        display_window("gaussian_blur", src, im)
 
     return im
 
@@ -47,7 +75,7 @@ def median_blur(src, radius=5, display=False):
     im = cv2.medianBlur(im, radius)
 
     if display:
-        display_window("Median blur", src, im)
+        display_window("median_blur", src, im)
 
     return im
 
